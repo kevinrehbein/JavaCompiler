@@ -1,32 +1,23 @@
-class Computador{
+class Interpretador{
 
+	public static void main(String[]args)
+	{	
+		ArvoreSintatica arv=null;
 	
-	Integer computa (ArvoreSintatica arv)
-	{
-		return (computa2(arv));
-	}
-	Integer computa2 (ArvoreSintatica arv)
-	{
+		try{
 
-	if (arv instanceof Mult)
-		return (computa2(((Mult) arv).arg1) * 
-			computa2(((Mult) arv).arg2));
+			AnaliseLexica al = new AnaliseLexica(args[0]);
+			Parser as = new Parser(al);
+		
+			arv = as.parseProg();
+		
+			Computador backend = new Computador();
+			Integer resultado = backend.computa(arv); 	
+			System.out.println(resultado);
 
-	if (arv instanceof Soma)
-		return (computa2(((Soma) arv).arg1) + 
-			computa2(((Soma) arv).arg2));
-
-	if (arv instanceof Sub)
-		return (computa2(((Sub) arv).arg1) - 
-			computa2(((Sub) arv).arg2));
-
-	if (arv instanceof Div)
-		return (computa2(((Div) arv).arg1) / 
-			computa2(((Div) arv).arg2));
-
-	if (arv instanceof Num)
-		return (((Num) arv).num);
-
-	return 0;
+		}catch(Exception e)
+		{			
+			System.out.println("Erro no interpretador:\n" + e);
+		}
 	}
 }
